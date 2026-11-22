@@ -21,44 +21,17 @@
      16. Case-study pages
      17. Responsive
      18. Motion preferences / print
+     19. Signature FX (view transitions, progress, spotlight, field, tilt)
    ========================================================================= */
 
 /* -------------------------------------------------------------------------
    Self-hosted variable fonts (SIL Open Font License 1.1)
    Inter Tight — display · JetBrains Mono — micro-labels & body
    ------------------------------------------------------------------------- */
-@font-face {
-  font-family: "Inter Tight";
-  font-style: normal;
-  font-weight: 300 800;
-  font-display: swap;
-  src: url("../fonts/inter-tight-latin-variable.woff2") format("woff2-variations");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304-0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "Inter Tight";
-  font-style: normal;
-  font-weight: 300 800;
-  font-display: swap;
-  src: url("../fonts/inter-tight-latin-ext-variable.woff2") format("woff2-variations");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  font-style: normal;
-  font-weight: 300 600;
-  font-display: swap;
-  src: url("../fonts/jetbrains-mono-latin-variable.woff2") format("woff2-variations");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304-0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  font-style: normal;
-  font-weight: 300 600;
-  font-display: swap;
-  src: url("../fonts/jetbrains-mono-latin-ext-variable.woff2") format("woff2-variations");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
+/* Optional font missing from supplied v5 files: use the existing fallback stack, avoiding a 404 fetch. */
+/* Optional font missing from supplied v5 files: use the existing fallback stack, avoiding a 404 fetch. */
+/* Optional font missing from supplied v5 files: use the existing fallback stack, avoiding a 404 fetch. */
+/* Optional font missing from supplied v5 files: use the existing fallback stack, avoiding a 404 fetch. */
 
 /* ---------------------------------------------------------------- 01. TOKENS */
 :root {
@@ -1050,7 +1023,7 @@ body.is-ready .hero__row--c .hero__title { transition-delay: 0.2s; }
   padding-top: 18px;
   border-top: 1px solid var(--line);
 }
-.quote figcaption span:last-child { display: flex; flex-direction: column; gap: 3px; }
+.quote figcaption > span:last-child { display: flex; flex-direction: column; gap: 3px; }
 .quote figcaption b { font-weight: 500; font-size: 0.92rem; color: var(--ink); }
 .quote figcaption i {
   font-style: normal;
@@ -1602,3 +1575,86 @@ body.is-ready .hero__row--c .hero__title { transition-delay: 0.2s; }
 }
 
 .loader__mark .glyph { font-size: 2.4rem; }
+
+/* ------------------------------------------------------- 19. SIGNATURE FX */
+
+/* native cross-document view transitions between pages */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: 460ms var(--ease-out) both vt-out;
+}
+::view-transition-new(root) {
+  animation: 560ms var(--ease-out) both vt-in;
+}
+@keyframes vt-out {
+  to { opacity: 0; transform: scale(0.985) translateY(8px); filter: blur(6px); }
+}
+@keyframes vt-in {
+  from { opacity: 0; transform: scale(1.015) translateY(-8px); filter: blur(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
+/* scroll progress thread */
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 130;
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, rgba(240, 229, 196, 0.35), var(--cream) 55%, #fff6dd);
+  box-shadow: 0 0 14px rgba(240, 229, 196, 0.5);
+}
+
+/* cursor-tracked ambient glow */
+.spotlight {
+  position: fixed;
+  top: 0; left: 0;
+  width: 580px; height: 580px;
+  z-index: 3;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(240, 229, 196, 0.1), rgba(240, 229, 196, 0.03) 42%, transparent 70%);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+@media (hover: none), (pointer: coarse) { .spotlight { display: none; } }
+
+/* hero — generative signal-wave field, sits between the portrait and the grid */
+.hero__field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+@media (max-width: 780px) { .hero__field { display: none; } }
+
+/* pointer-reactive tilt + glare — shared by the featured gallery and archive tiles */
+.pcard__link,
+.tile { --gx: 50%; --gy: 50%; }
+.pcard__link::after,
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(420px circle at var(--gx) var(--gy), rgba(240, 229, 196, 0.2), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.pcard__link:hover::after,
+.tile:hover::after { opacity: 1; }

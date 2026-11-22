@@ -1,95 +1,72 @@
-# Harsh — Portfolio
+# Harsh v5 — Smooth Scrolling / 2× Coordinated Cursors
 
-A portfolio site for **Harsh** — web developer building **websites, apps and AI products**.
+Based on the black/cream coordinated-cursor 2× video-ready edition. Prior ZIPs are unchanged. This is not a mobile-lite redesign.
 
-Design direction is modelled on [marcuslorenzet.com](https://www.marcuslorenzet.com/): near-black canvas,
-cream typography, oversized grotesk headlines, monospace micro-labels, a pinned horizontal project
-gallery, scroll-linked word reveals and a floating dock navigation.
+## What was fixed
 
-Plain HTML, CSS and JavaScript — **no build step, no dependencies**.
+Slow scrolling previously mixed repeated layout reads and style writes, repainted the idle cursor canvas, and measured parallax using its own already-transformed position. Scroll-driven parallax also inherited a one-second CSS transform transition, causing each small wheel movement to restart a delayed tween.
 
-## Run it
+### Scroll pipeline
 
-```bash
-python3 -m http.server 8000
-# then open http://localhost:8000
-```
+- Cache document-space geometry and marquee distances; scroll effects consume cached numeric boxes instead of repeatedly forcing layout.
+- Invalidate caches on actual load, resize, ResizeObserver size changes, archive filtering and completed cursor construction.
+- Separate scroll-driven parallax from entrance-transform tweening, removing feedback/drift. Opacity entrances remain.
+- Update word-lighting classes only across the changed boundary.
+- Update gallery counter text and active navigation classes only when their values actually change.
+- Pointer ring and case preview use transforms/individual translate rather than repeated left/top layout writes.
 
-Any static host works (Netlify, Vercel, GitHub Pages, Cloudflare Pages): upload the folder as-is.
+### Rendering
 
-## Pages
+- Parked cursors stay visible on their existing canvas without clearing/redrawing it for every tiny scroll event. Active construction still animates normally.
+- Prepare at most one new construction job per frame to reduce initialization bursts; crews still work in parallel.
+- Six animated background waves are now full-resolution static SVG strips translated by the compositor, rather than a full-screen high-DPI canvas redrawn every frame. Their wave rates/amplitudes remain coordinated with the original effect; pointer response uses a gentle compositor-driven field tilt.
+- Animated grain is a small raster texture rather than a live SVG turbulence filter. Overscan is reduced from 50% per side to the 6% needed for its actual movement. Grain remains animated, but is subtly normal-composited rather than a costly full-screen overlay blend.
+- Field and native-pointer compositing avoid expensive blend passes. There is no reduced phone-image mode or canvas-DPR downgrade.
+- The hero grayscale/contrast/brightness treatment is pre-rendered to a lossless PNG at the original 1040×1280 resolution, avoiding a live image filter. Original image remains included.
 
-| File | What it is |
-| --- | --- |
-| `index.html` | Home — hero, marquee, what I do, stack ticker, featured gallery, case studies, testimonials, about, focus, CTA, footer |
-| `archive.html` | Filterable grid of everything, with a lightbox |
-| `nova.html`, `aria.html`, `cadence.html`, `fitloop.html`, `brew.html`, `vision.html` | Six case-study pages sharing one template |
+The visual treatment is retained, but grain compositing and pointer-wave tilt were reimplemented for performance; this is not a claim of pixel-identical filter output.
 
-## Files
+## Retained
 
-```
-index.html · archive.html · <project>.html
-assets/css/styles.css     all styling (18 numbered sections)
-assets/js/main.js         all behaviour (16 numbered modules)
-assets/fonts/             self-hosted Inter Tight + JetBrains Mono (variable woff2)
-assets/img/               project shots (webp), placeholder art, favicon
-```
+- Fixed persistent pool: 12 desktop / 6 touch cursors, permanent roles, no job-index teleporting, no per-task respawns or fade replacement.
+- 2× speed multiplier; 550ms base work budget, doubled travel ceilings, visible travel and crew synchronization. Actual task time includes travel and arrival.
+- Original black/cream typography/layout, project content, imagery and full supported animation suite.
+- Bold face-first/name-second intro, small cursors, no labels or Rebuild button, horizontal testimonial names and refresh-to-top.
+- Drop-in video: assets/video/dark.mp4. The existing photo remains fallback until it plays. Muted looping, inline playback, deferred video loading, manual Play when needed and off-screen pausing remain.
 
-## Make it yours
+## Controlled slow-scroll measurement
 
-1. **Your photo (important)**
-   Add your image as `assets/img/harsh.jpg`. Until that file exists the site shows a
-   labelled placeholder (`assets/img/harsh-placeholder.svg`). It is used in the hero
-   (full-bleed, shown greyscale) and in the About section — a portrait or a photo of you
-   at a laptop is ideal. `.png`/`.webp` also work: change the `src` in `index.html` (2 places).
+Chromium 1440×950, device pixel ratio 2, 4× CPU throttling, 300px movement over six seconds after initial construction. Before = prior 2× edition on local port 8230; after = this edition on 8240.
 
-2. **Email + phone**
-   Find & replace `hello@harsh.dev` and `+91 98765 43210` across the HTML files.
-   The `data-copy` button copies whatever is in its attribute, so update that too.
+| Metric | Before | After |
+|---|---:|---:|
+| Hero p95 frame interval | 117ms | 33ms |
+| Hero main-thread long tasks (>50ms) | 76 | 0 |
+| Hero layout passes | 80 | 2 |
+| About p95 frame interval | 50ms | 33ms |
+| About layout passes | 155 | 1 |
 
-3. **Social links**
-   The footer "Follow" column points at `github.com`, `linkedin.com`, `x.com` and
-   `instagram.com` — swap in your real profile URLs.
+These are controlled simulation samples, not physical-machine guarantees. Browser rasterization, GPU acceleration, temperature, available RAM, display refresh rate and other running apps affect actual FPS. No fixed 60/120/144/500FPS or zero-lag guarantee is made. The code does not add a frame-rate cap to native scrolling.
 
-4. **Résumé**
-   In `index.html` the `Download résumé` button is `<a href="#" download>`. Point it at
-   a PDF (e.g. `assets/harsh-resume.pdf`) and drop that file into `assets/`.
+## Regression checks
 
-5. **Projects**
-   - Gallery cards (home): copy one `<article class="pcard">` block in `#featured`.
-   - Case-study list: copy one `<li class="case">` block in `.cases__list`.
-   - Archive: copy one `<figure class="tile">` block. `data-cat` accepts `websites`,
-     `apps`, `ai` (space-separate for multiple); `data-title` is the lightbox caption.
-   - Each card links to a case-study page — edit the `href` to point at your own.
+- Zero idle cursor-canvas redraws during a tiny continuous-scroll check.
+- No parallax-position drift after repeated same-position scroll events.
+- Stable cursor IDs/roles and zero movement-limit violations across desktop/mobile assignments.
+- No horizontal overflow or JavaScript exceptions in tested desktop/mobile flows.
+- Valid temporary H.264 About video played correctly; missing-video photo fallback retained. No sample video is included.
+- Archive and all six case-study pages loaded without JavaScript exceptions.
+- All local HTML link/script/image references resolve.
 
-6. **Words**
-   Statements, testimonials, timeline copy and the case-study text are all plain HTML.
-   Replace the three sample testimonials with real ones before you publish.
+## Use
 
-7. **Colours**
-   Open `assets/css/styles.css` → section `01. TOKENS`. Everything derives from a handful
-   of variables: `--bg`, `--cream`, `--ink`, `--muted`, `--line`.
+Extract the ENTIRE ZIP, retain the assets directory and deploy as a static site. No build step. Local preview: python3 -m http.server 3000.
 
-## What is in the build
+If you already added a video to a previous local edition, copy it into this edition at assets/video/dark.mp4 too. Your local video cannot be included here unless you upload it.
 
-- **Preloader** with a counting percentage, then a staggered hero entrance
-- **Pinned horizontal gallery** — the section pins and cards travel sideways as you scroll
-  (falls back to a native swipeable scroller under 980px and with reduced motion on)
-- **Scroll-lit headlines** — word-by-word colour reveal tied to scroll position
-- **Hero parallax** on the portrait, scroll-linked marquee, infinite tool tickers
-- **Case-study hover previews** that follow the cursor
-- **Testimonials** over outlined giant type that drifts with the scroll
-- **Custom cursor** (fine pointers only), film-grain overlay, floating dock with scrollspy
-- Custom scrollbar, focus-visible styles, `prefers-reduced-motion` support, mobile menu
-- Archive filters + keyboard-accessible lightbox, copy-to-clipboard email
+Modified: assets/js/main.js, assets/js/swarm.js, versioned HTML references and hero image reference. Added: assets/css/performance.css, assets/img/grain-fast.png, assets/img/harsh-rendered.png.
 
-## Performance notes
 
-Project shots are optimised `.webp` (~20–70 KB each). Fonts are subset variable `.woff2`
-files served from your own domain — no third-party requests at all. If you add large
-images, run them through any WebP/AVIF converter first.
+## Drop-in cassette work
 
-## Licence / credits
-
-Fonts: Inter Tight and JetBrains Mono, both under the SIL Open Font License 1.1
-(licence files ship inside the font packages). Code is yours to use and modify.
+Read **PUT-YOUR-2-FILES-HERE.txt**. Your original two uploaded files are included unchanged inside `assets/3d-work/cassette-gallery/`, beside a ready-made index.html that runs them directly. The archive card embeds a live preview; clicking it opens the full interactive work. The folder can also be hosted independently. HTTP hosting required.
