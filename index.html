@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"><script>(function(){if('scrollRestoration' in history)history.scrollRestoration='manual';var nav=performance.getEntriesByType('navigation')[0];if(nav&&nav.type==='reload'){if(location.hash)history.replaceState(null,'',location.pathname+location.search);var top=function(){window.scrollTo({top:0,left:0,behavior:'instant'})};document.documentElement.style.scrollBehavior='auto';top();addEventListener('DOMContentLoaded',top,{once:true});addEventListener('load',top,{once:true});document.addEventListener('harsh:signature-done',function(){document.documentElement.style.removeProperty('scroll-behavior')},{once:true});setTimeout(function(){document.documentElement.style.removeProperty('scroll-behavior')},5000)}})();</script>
 <script>document.documentElement.classList.add('js');</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -20,9 +20,22 @@
 <meta name="twitter:image" content="assets/img/og.png">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/swarm.css?v=5-high-fps-1">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('swarm-enabled','swarm-zero','signature-opening');setTimeout(function(){document.documentElement.classList.remove('swarm-zero','signature-opening');document.dispatchEvent(new Event('harsh:signature-done'))},8000)}</script>
+<style>.swarm-zero body{visibility:hidden;background:#050505}.swarm-zero .swarm-canvas{visibility:visible}</style>
+<link rel="stylesheet" href="assets/css/signature.css?v=6-intro">
+<link rel="stylesheet" href="assets/css/smooth.css">
+<link rel="stylesheet" href="assets/css/full-quality.css">
+<link rel="stylesheet" href="assets/css/about-video.css?v=1">
+<link rel="stylesheet" href="assets/css/performance.css?v=1">
 </head>
 <body class="is-loading">
-
+<div class="hx-intro" id="hx-intro" role="presentation" aria-label="Harsh introduction">
+  <canvas class="hx-cv" id="hx-cv" aria-hidden="true"></canvas>
+  <div class="hx-grain" aria-hidden="true"></div>
+  <div class="hx-lock" id="hx-lock" aria-hidden="true"><span class="hx-lock__face">&times;&#860;&times;</span><span class="hx-lock__name">harsh</span></div>
+  <div class="hx-flash" id="hx-flash" aria-hidden="true"></div>
+</div>
 <!-- ============ PRELOADER ============ -->
 <div class="loader" id="loader" aria-hidden="true">
   <div class="loader__inner">
@@ -56,7 +69,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero" id="hero">
     <div class="hero__media" data-hero-media>
-      <img src="assets/img/harsh.webp" alt="Portrait of Harsh, web developer" fetchpriority="high" decoding="async"
+      <img src="assets/img/harsh-rendered.png" alt="Portrait of Harsh, web developer" fetchpriority="high" decoding="async"
            onerror="this.onerror=null;this.src='assets/img/harsh-placeholder.svg';">
     </div>
 
@@ -234,7 +247,7 @@
         </article>
 
         <article class="pcard" data-cursor="view">
-          <a class="pcard__link" href="archive.html">
+          <a class="pcard__link" href="archive.html#3d">
             <span class="pcard__index">09</span>
             <div class="pcard__media"><img src="assets/img/work-gallery3d.webp" alt="Dark 3D image gallery" loading="lazy"></div>
             <div class="pcard__meta">
@@ -340,8 +353,22 @@
     <div class="about__top">
       <h2 class="huge" data-split="words">I'm Harsh, a web developer who cares about the details most people never notice.</h2>
       <div class="about__photo reveal" data-reveal data-parallax="0.06">
-        <img src="assets/img/harsh.webp" alt="Harsh at work"
-             onerror="this.onerror=null;this.src='assets/img/harsh-placeholder.svg';">
+        <!-- Add your H.264 MP4 at assets/video/dark.mp4. Keep the fallback photo. -->
+        <video class="about__video" id="about-video" muted loop playsinline
+               preload="none" poster="assets/img/harsh-new.webp"
+               aria-label="Video portrait of Harsh">
+          <!-- Tolerant: the first of these files that exists and plays is used. -->
+          <source data-src="assets/video/dark.mp4" type="video/mp4">
+          <source data-src="assets/video/dark.mp4.mp4">
+          <source data-src="assets/video/dark.MP4">
+          <source data-src="assets/video/dark.webm">
+          <source data-src="assets/video/dark.mov">
+          <source data-src="assets/video/dark.m4v">
+        </video>
+        <img class="about__video-fallback" src="assets/img/harsh-new.webp"
+             alt="Portrait of Harsh with a cyan neon mask and smoky background">
+        <button class="about__video-play" type="button" hidden data-swarm-skip
+                aria-label="Play video portrait">Play video ↗</button>
       </div>
     </div>
 
@@ -492,6 +519,9 @@
   </div>
 </div>
 
-<script src="assets/js/main.js"></script>
+<script src="assets/js/main.js?v=5-high-fps-1"></script>
+<script src="assets/js/signature.js?v=6-intro" defer></script>
+<script src="assets/js/swarm.js?v=6-logo-home" defer></script>
+<script src="assets/js/about-video.js?v=2" defer></script>
 </body>
 </html>

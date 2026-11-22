@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"><script>(function(){if('scrollRestoration' in history)history.scrollRestoration='manual';var nav=performance.getEntriesByType('navigation')[0];if(nav&&nav.type==='reload'){if(location.hash)history.replaceState(null,'',location.pathname+location.search);var top=function(){window.scrollTo({top:0,left:0,behavior:'instant'})};document.documentElement.style.scrollBehavior='auto';top();addEventListener('DOMContentLoaded',top,{once:true});addEventListener('load',top,{once:true});document.addEventListener('harsh:signature-done',function(){document.documentElement.style.removeProperty('scroll-behavior')},{once:true});setTimeout(function(){document.documentElement.style.removeProperty('scroll-behavior')},5000)}})();</script>
 <script>document.documentElement.classList.add('js');</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -20,8 +20,16 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/swarm.css?v=5-high-fps-1">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('swarm-enabled','swarm-zero');setTimeout(function(){document.documentElement.classList.remove('swarm-zero')},5000)}</script>
+<style>.swarm-zero body{visibility:hidden;background:#050505}.swarm-zero .swarm-canvas{visibility:visible}</style>
+<link rel="stylesheet" href="assets/css/signature.css">
+<link rel="stylesheet" href="assets/css/smooth.css">
+<link rel="stylesheet" href="assets/css/full-quality.css">
+<link rel="stylesheet" href="assets/css/performance.css?v=1">
 </head>
 <body>
+
 
 <div class="grain" aria-hidden="true"></div>
 <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
@@ -149,6 +157,8 @@
   </div>
 </nav>
 
-<script src="assets/js/main.js"></script>
+<script src="assets/js/main.js?v=5-high-fps-1"></script>
+<script src="assets/js/signature.js" defer></script>
+<script src="assets/js/swarm.js?v=6-logo-home" defer></script>
 </body>
 </html>

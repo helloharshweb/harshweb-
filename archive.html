@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"><script>(function(){if('scrollRestoration' in history)history.scrollRestoration='manual';var nav=performance.getEntriesByType('navigation')[0];if(nav&&nav.type==='reload'){if(location.hash)history.replaceState(null,'',location.pathname+location.search);var top=function(){window.scrollTo({top:0,left:0,behavior:'instant'})};document.documentElement.style.scrollBehavior='auto';top();addEventListener('DOMContentLoaded',top,{once:true});addEventListener('load',top,{once:true});document.addEventListener('harsh:signature-done',function(){document.documentElement.style.removeProperty('scroll-behavior')},{once:true});setTimeout(function(){document.documentElement.style.removeProperty('scroll-behavior')},5000)}})();</script>
 <script>document.documentElement.classList.add('js');</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -20,8 +20,17 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/swarm.css?v=5-high-fps-1">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('swarm-enabled','swarm-zero');setTimeout(function(){document.documentElement.classList.remove('swarm-zero')},5000)}</script>
+<style>.swarm-zero body{visibility:hidden;background:#050505}.swarm-zero .swarm-canvas{visibility:visible}</style>
+<link rel="stylesheet" href="assets/css/signature.css">
+<link rel="stylesheet" href="assets/css/smooth.css">
+<link rel="stylesheet" href="assets/css/full-quality.css">
+<link rel="stylesheet" href="assets/css/performance.css?v=1">
+<link rel="stylesheet" href="assets/css/three-work-cards.css?v=1">
 </head>
 <body class="is-loading">
+
 
 <div class="grain" aria-hidden="true"></div>
 <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
@@ -43,13 +52,14 @@
   </header>
 
   <div class="filters" role="tablist" aria-label="Filter work by type">
-    <button type="button" class="is-active" data-filter="all">All</button>
-    <button type="button" data-filter="websites">Websites</button>
-    <button type="button" data-filter="apps">Apps</button>
-    <button type="button" data-filter="ai">AI</button>
+    <button type="button" class="is-active" data-filter="all" id="filter-all" role="tab" aria-selected="true" aria-controls="archive-project-grid">All</button>
+    <button type="button" data-filter="websites" id="filter-websites" role="tab" aria-selected="false" aria-controls="archive-project-grid">Websites</button>
+    <button type="button" data-filter="apps" id="filter-apps" role="tab" aria-selected="false" aria-controls="archive-project-grid">Apps</button>
+    <button type="button" data-filter="ai" id="filter-ai" role="tab" aria-selected="false" aria-controls="archive-project-grid">AI</button>
+    <button type="button" data-filter="3d" id="filter-3d" role="tab" aria-selected="false" aria-controls="archive3d-panel">3D Work</button>
   </div>
 
-  <div class="archive__grid">
+  <div class="archive__grid" id="archive-project-grid" role="tabpanel" aria-labelledby="filter-all">
     <figure class="tile" data-title="Nova — Analytics dashboard" data-cat="apps ai">
       <img src="assets/img/project-nova.webp" alt="Nova analytics dashboard" loading="lazy">
       <figcaption><span>Nova — Analytics dashboard</span><span>App · AI</span></figcaption>
@@ -96,6 +106,11 @@
     </figure>
   </div>
 
+
+  <section class="archive3d-panel" id="archive3d-panel" role="tabpanel" aria-labelledby="filter-3d" hidden>
+    <div id="three-work-cards" class="three-work-cards"></div>
+  </section>
+
   <div class="cta__actions" style="justify-content:flex-start;margin-top:clamp(50px,7vw,90px)">
     <a class="btn btn--cream" href="mailto:hello.harshweb@gmail.com"><span class="avatar avatar--btn" data-initials="H"></span>Let's talk</a>
     <a class="btn btn--ghost" href="index.html">Back home <span aria-hidden="true">→</span></a>
@@ -135,6 +150,11 @@
   </div>
 </div>
 
-<script src="assets/js/main.js"></script>
+<script src="assets/js/main.js?v=5-high-fps-1"></script>
+<script src="assets/js/signature.js" defer></script>
+<script src="assets/js/swarm.js?v=6-logo-home" defer></script>
+<script src="assets/js/three-works.js"></script>
+<script src="assets/js/three-work-mount.js?v=2"></script>
+<script src="assets/js/three-work-cards.js?v=2" defer></script>
 </body>
 </html>
