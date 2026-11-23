@@ -1,0 +1,48 @@
+/* ============================================================
+   ×͜× — burning.  one rule, basically.
+   ============================================================ */
+
+.hx-fire {
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;              /* the fire burns behind the real glyph */
+  pointer-events: none;
+  /* the flame is drawn additively inside the canvas, so no blend mode
+     is needed here — but it must never take a click */
+  will-change: contents;
+}
+
+/* the font's combining smile is drawn wherever the font likes — and it is
+   rarely centred. We keep the two real ×'s and draw the smile ourselves,
+   so it is always symmetric under them. */
+.glyph.hx-split::before { content: none; }
+
+/* the two crosses, each in its own element so they can blink */
+.hx-x {
+  display: inline-block;
+  transform-origin: 50% 52%;
+  transition: transform 0.085s ease-in;
+  will-change: transform;
+}
+.glyph.is-blink .hx-x { transform: scaleY(0.09); }
+.glyph.is-blink .hx-x:nth-of-type(2) { transform: scaleY(0.09) translateY(0.4px); }
+
+.hx-smile {
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+  color: inherit;
+}
+
+/* the body goes behind the letters, the sparks in front of them */
+.glyph { position: relative; z-index: 0; }
+.hx-fire--back  { z-index: -1; }
+.hx-fire--front { z-index: 2; }
+
+/* header mark at 2× size (was 1.25em). The flame, smile and blink all scale from the glyph's own box. */
+.topbar__logo .glyph--sm {
+  font-size: 2.5em;
+  margin-left: 12px;
+}
+/* a little more headroom above the mark so the taller flame isn't cut by the top of the window */
+.topbar { padding-top: calc(clamp(16px, 2.2vw, 30px) + 14px); }
