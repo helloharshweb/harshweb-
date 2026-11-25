@@ -1,0 +1,254 @@
+/* =========================================================================
+   HARSH — SIGNATURE INTRO  (v6 "swarm signature")
+   Drop-in replacement for assets/css/signature.css
+   Design language: #050505 canvas · #f0e5c4 cream · grotesk + mono micro-labels
+   Every selector is namespaced .hx-* so nothing else on the site is touched.
+   ========================================================================= */
+
+/* the intro takes over the viewport while it plays */
+html.signature-opening { overflow: hidden; background: #050505; }
+html.signature-opening body { overflow: hidden; }
+
+/* ---------------------------------------------------------------- overlay */
+.hx-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: block;
+  background: #050505;
+  color: var(--hx-cream, #f0e5c4);
+  /* body is visibility:hidden while .swarm-zero is on the root */
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.85s cubic-bezier(0.22, 0.68, 0.16, 1);
+  will-change: opacity, transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.hx-intro.is-out {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.035);
+  transition: opacity 1.15s cubic-bezier(0.45, 0, 0.25, 1),
+              transform 1.6s cubic-bezier(0.22, 0.68, 0.16, 1);
+}
+
+.hx-cv {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* film grain — same texture family as the site */
+.hx-grain {
+  position: absolute;
+  inset: -6%;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url('../img/grain-fast.png');
+  background-size: 200px 200px;
+  will-change: transform;
+  animation: hxGrain 7s steps(5) infinite;
+}
+@keyframes hxGrain {
+  0%, 100% { transform: translate(0, 0) }
+  25% { transform: translate(-2%, 1.5%) }
+  50% { transform: translate(1.5%, -2%) }
+  75% { transform: translate(-1%, -1%) }
+}
+
+/* ------------------------------------------------------------ corner HUD */
+.hx-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 229, 196, 0.42);
+}
+.hx-hud > * { position: absolute; display: flex; align-items: center; gap: 9px; }
+.hx-tl { top: 26px; left: clamp(16px, 3.4vw, 64px); }
+.hx-tr { top: 22px; right: clamp(16px, 3.4vw, 64px); }
+.hx-bl { bottom: 34px; left: clamp(16px, 3.4vw, 64px); }
+.hx-br { bottom: 34px; right: clamp(16px, 3.4vw, 64px); }
+
+.hx-hud__face {
+  font-family: var(--font-display, "Inter Tight", Helvetica, Arial, sans-serif);
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--hx-cream, #f0e5c4);
+  opacity: 0.9;
+}
+.hx-hud__name { color: rgba(240, 229, 196, 0.72); }
+
+/* every HUD child fades in with a stagger */
+.hx-hud > * { opacity: 0; transform: translateY(-4px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.hx-intro.is-hud .hx-hud > * { opacity: 1; transform: none; }
+.hx-intro.is-hud .hx-tl { transition-delay: 0.05s; }
+.hx-intro.is-hud .hx-tr { transition-delay: 0.12s; }
+.hx-intro.is-hud .hx-bl { transition-delay: 0.19s; }
+.hx-intro.is-hud .hx-br { transition-delay: 0.26s; }
+.hx-bl, .hx-br { transform: translateY(4px); }
+
+.hx-pct { color: var(--hx-cream, #f0e5c4); font-variant-numeric: tabular-nums; letter-spacing: 0.12em; }
+.hx-pct small { font-size: 9px; color: rgba(240, 229, 196, 0.3); margin-left: 2px; }
+
+/* skip */
+.hx-skip {
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: rgba(240, 229, 196, 0.42);
+  transition: color 0.35s ease, opacity 0.35s ease;
+}
+.hx-skip:hover, .hx-skip:focus-visible { color: var(--hx-cream, #f0e5c4); outline: none; }
+.hx-skip::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hx-skip:hover::after, .hx-skip:focus-visible::after { transform: scaleX(1); }
+
+/* ------------------------------------------------ crisp lockup (final beat) */
+.hx-lock {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  align-items: baseline;
+  gap: 0.16em;
+  white-space: nowrap;
+  color: var(--hx-cream, #f0e5c4);
+  font-family: var(--font-display, "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-weight: 800;
+  font-size: var(--hx-fs, 160px);
+  letter-spacing: -0.055em;
+  line-height: 1;
+  transform: translate(-50%, -50%) scale(1.015);
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 0.5s ease, filter 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
+}
+.hx-lock__face { font-size: 0.78em; letter-spacing: -0.09em; padding-right: 0.06em; }
+/* crispMark:false — the wordmark is made of particles only, no solid text */
+.no-lock .hx-lock { display: none; }
+.hx-lock.is-in { opacity: 1; filter: blur(0); transform: translate(-50%, -50%) scale(1); }
+
+/* SNAP OUTRO — a soft vertical front eats the ink left to right.
+   intro.js drives --hx-wipe from 0% to 112%; the ash, the sparks and the heat
+   are all drawn on the canvas underneath, so the ink thins into the dust
+   instead of stopping at a hard line. */
+.hx-lock.is-wiping {
+  -webkit-mask-image: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) var(--hx-wipe, 0%),
+    rgba(0, 0, 0, 0.45) calc(var(--hx-wipe, 0%) + 4%),
+    rgba(0, 0, 0, 0.85) calc(var(--hx-wipe, 0%) + 9%),
+    #000 calc(var(--hx-wipe, 0%) + 15%),
+    #000 100%);
+  mask-image: linear-gradient(90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) var(--hx-wipe, 0%),
+    rgba(0, 0, 0, 0.45) calc(var(--hx-wipe, 0%) + 4%),
+    rgba(0, 0, 0, 0.85) calc(var(--hx-wipe, 0%) + 9%),
+    #000 calc(var(--hx-wipe, 0%) + 15%),
+    #000 100%);
+}
+
+/* hairline rule that draws itself under the lockup */
+.hx-rule {
+  position: absolute;
+  left: 50%;
+  height: 1px;
+  width: var(--hx-rule-w, 0px);
+  background: rgba(240, 229, 196, 0.34);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hx-rule.is-in { transform: translateX(-50%) scaleX(1); }
+.hx-rule.is-gone { opacity: 0; transition: opacity 0.3s ease; }
+
+/* --------------------------------------------- bottom progress hairline */
+.hx-progress {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: rgba(240, 229, 196, 0.1);
+  overflow: hidden;
+}
+.hx-progress i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--hx-cream, #f0e5c4);
+  box-shadow: 0 0 12px rgba(240, 229, 196, 0.55);
+}
+
+/* bloom of light from the mark as it hands over */
+.hx-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 50%,
+    var(--hx-cream, #f0e5c4) 0%,
+    rgba(240, 229, 196, 0.55) 32%,
+    rgba(240, 229, 196, 0) 68%);
+}
+.hx-flash.is-on { animation: hxFlash 0.78s cubic-bezier(0.22, 0.7, 0.2, 1) forwards; }
+@keyframes hxFlash {
+  0% { opacity: 0 }
+  10% { opacity: 0.95 }
+  38% { opacity: 0.5 }
+  100% { opacity: 0 }
+}
+
+.hx-intro.no-hud .hx-hud,
+.hx-intro.no-hud .hx-progress { display: none; }
+.hx-intro.no-grain .hx-grain { display: none; }
+
+/* ------------------------------------------------------------ reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hx-intro { display: none !important; }
+  html.signature-opening { overflow: auto; }
+}
+
+/* ---------------------------------------------- hand-off / smooth out
+   The chrome goes first (.is-quiet), then the whole scene dissolves — a slow
+   zoom plus a touch of blur, so it lifts rather than cuts. */
+.hx-intro.is-quiet .hx-hud > *,
+.hx-intro.is-quiet .hx-rule,
+.hx-intro.is-quiet .hx-progress { opacity: 0; transition: opacity 0.55s ease; }
+
+.hx-intro.is-quiet .hx-phase { opacity: 0; transition: opacity 0.55s ease; }
+
+/* ---- Retained from the previous signature.css (not part of the intro) ---- */
+.signature-opening .swarm-canvas,.signature-opening .swarm-replay{visibility:hidden}
+.signature-opening body{visibility:hidden;overflow:hidden}
+/* Custom typing tags do not match the portfolio's span layout selectors. */
+swarm-run,swarm-word,swarm-letter{font:inherit;line-height:inherit;letter-spacing:inherit;color:inherit}
+.quote figcaption{flex-direction:row;align-items:center;flex-wrap:nowrap}
+.quote figcaption > .avatar{flex:0 0 auto}
+.quote figcaption > span:last-child{min-width:0;display:flex;flex-direction:column;gap:3px}
+.quote figcaption b{display:block;white-space:nowrap;word-break:normal;overflow-wrap:normal;writing-mode:horizontal-tb}
+.quote figcaption i{display:block;word-break:normal;overflow-wrap:normal;writing-mode:horizontal-tb}
+.quote figcaption swarm-run,.quote figcaption swarm-word,.quote figcaption swarm-letter{display:inline;flex:none;writing-mode:horizontal-tb}
+@media(prefers-reduced-motion:reduce){.signature-opening body{visibility:visible;overflow:auto}}
