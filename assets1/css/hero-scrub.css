@@ -1,0 +1,21 @@
+/* Hero: pinned scroll track with a frame-scrubbed canvas background. */
+.hero{display:block;min-height:0;height:380svh;overflow:visible;isolation:auto}
+.hero__stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center;overflow:hidden;isolation:isolate}
+.hero__media{display:block;transform:none!important;will-change:opacity}
+.hero__canvas,.hero__poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 50%;opacity:1;filter:none}
+.hero__canvas{opacity:0;transition:opacity .5s ease}
+.hero__media.is-ready .hero__canvas{opacity:1}
+.hero__media.is-ready .hero__poster{visibility:hidden}
+/* replace the old portrait glow/edges with a scrim that keeps the type readable */
+.hero__media::before{display:none}
+.hero__media::after{
+  background:
+    linear-gradient(to bottom,rgba(5,5,5,.65) 0%,rgba(5,5,5,0) 24%,rgba(5,5,5,0) 62%,var(--bg) 100%),
+    linear-gradient(to right,rgba(5,5,5,.1) 0%,rgba(5,5,5,.15) 45%,rgba(5,5,5,.6) 100%);
+}
+@media(max-width:780px){
+  .hero{height:300svh}
+  .hero__canvas,.hero__poster{object-position:38% 50%}
+  .hero__media::after{background:linear-gradient(to bottom,rgba(5,5,5,.7) 0%,rgba(5,5,5,.35) 40%,rgba(5,5,5,.5) 70%,var(--bg) 100%)}
+}
+@media(prefers-reduced-motion:reduce){.hero{height:auto;min-height:100svh}.hero__stage{position:relative}}
