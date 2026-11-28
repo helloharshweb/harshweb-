@@ -1,0 +1,114 @@
+/* ============================================================
+   NEON BLUE — accents that match the burning ×͜× mark.
+   Cream stays the main colour; neon is used only where it
+   draws the eye: interaction, light, and a few signature lines.
+   Remove this file (and its <link>) to go back to cream-only.
+   ============================================================ */
+
+:root {
+  --neon:      #2f8bff;                    /* core neon blue */
+  --neon-2:    #5cc8ff;                    /* brighter, cyan-leaning */
+  --neon-hi:   #b8ecff;                    /* hot white-blue */
+  --neon-line: rgba(47, 139, 255, 0.55);
+  --neon-soft: rgba(47, 139, 255, 0.16);
+  --neon-glow: 0 0 14px rgba(47, 139, 255, 0.55), 0 0 38px rgba(47, 139, 255, 0.28);
+}
+
+/* ---------- global details ---------- */
+::selection { background: var(--neon-2); color: #03101f; }
+:focus-visible { outline-color: var(--neon-2); }
+html { scrollbar-color: rgba(47, 139, 255, 0.5) transparent; }
+::-webkit-scrollbar-thumb { background: rgba(47, 139, 255, 0.42); }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-2); }
+
+/* ---------- scroll progress thread: a neon beam ---------- */
+.progress span {
+  background: linear-gradient(90deg, rgba(47, 139, 255, 0.4), var(--neon) 40%, var(--neon-2) 80%, var(--neon-hi));
+  box-shadow: 0 0 10px rgba(47, 139, 255, 0.9), 0 0 26px rgba(47, 139, 255, 0.55);
+}
+.loader__bar span { background: var(--neon-2); box-shadow: 0 0 12px rgba(47, 139, 255, 0.8); }
+
+/* ---------- header ---------- */
+.dot {
+  background: var(--neon-2);
+  box-shadow: 0 0 0 4px rgba(47, 139, 255, 0.18), 0 0 12px rgba(92, 200, 255, 0.9);
+}
+.topbar__mail:hover { color: var(--neon-hi); border-color: var(--neon-2); }
+
+/* ---------- hero ---------- */
+/* a cool light behind the masked portrait, so the neon mask feels like it is lighting the scene */
+.hero__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 26% 26% at 50% 38%, rgba(60, 170, 255, 0.28), rgba(30, 110, 255, 0.10) 55%, transparent 80%),
+    radial-gradient(ellipse 52% 60% at 50% 62%, rgba(30, 110, 255, 0.10), transparent 70%);
+}
+.hero__grid { background-image: linear-gradient(to right, rgba(92, 200, 255, 0.075) 1px, transparent 1px); }
+.chip { border-color: rgba(92, 200, 255, 0.26); box-shadow: inset 0 0 0 1px rgba(47, 139, 255, 0.05), 0 0 22px rgba(47, 139, 255, 0.10); }
+.chip b { color: var(--neon-hi); }
+.hero__arrow { color: var(--neon-2); }
+.hero__arrow svg { filter: drop-shadow(0 0 6px rgba(47, 139, 255, 0.8)); }
+
+/* ---------- small mono labels: [ What I do ] ---------- */
+.label { color: rgba(110, 205, 255, 0.88); text-shadow: 0 0 12px rgba(47, 139, 255, 0.45); }
+
+/* ---------- giant outlined words ---------- */
+.marquee__word.is-outline { -webkit-text-stroke: 1px rgba(92, 200, 255, 0.75); }
+.footer__huge .is-outline {
+  -webkit-text-stroke: 1px rgba(92, 200, 255, 0.8);
+  filter: drop-shadow(0 0 10px rgba(47, 139, 255, 0.55));
+}
+
+/* ---------- tech ticker ---------- */
+.ticker__track i { color: var(--neon); text-shadow: 0 0 10px rgba(47, 139, 255, 0.9); }
+
+/* ---------- project cards ---------- */
+.pcard__link:hover {
+  border-color: var(--neon-line);
+  box-shadow: 0 0 0 1px rgba(47, 139, 255, 0.35), 0 0 38px rgba(47, 139, 255, 0.22), 0 26px 60px rgba(0, 0, 0, 0.5);
+}
+.pcard__index { color: var(--neon-hi); border-color: rgba(92, 200, 255, 0.35); }
+.tags em { border-color: rgba(92, 200, 255, 0.22); }
+.pcard__link:hover .tags em { border-color: rgba(92, 200, 255, 0.5); color: var(--neon-hi); }
+
+/* ---------- case-study list ---------- */
+.cases__list { border-top-color: var(--neon-line); }
+.case__num { color: var(--neon-2); }
+.case__link:hover .case__name { color: var(--cream); text-shadow: 0 0 28px rgba(47, 139, 255, 0.35); }
+.case__hover { color: var(--neon-hi); }
+.case:hover { border-bottom-color: var(--neon-line); }
+
+/* ---------- testimonials ---------- */
+.quote:hover { border-color: var(--neon-line); box-shadow: 0 0 34px rgba(47, 139, 255, 0.16); }
+.quote__num { color: var(--neon-2); }
+
+/* ---------- buttons, dock, copy ---------- */
+.btn--ghost:hover { border-color: var(--neon-2); color: var(--neon-hi); box-shadow: 0 0 26px rgba(47, 139, 255, 0.32); }
+.btn--outline:hover { background: var(--neon-2); border-color: var(--neon-2); color: #03101f; }
+.btn--cream:hover { box-shadow: 0 0 30px rgba(47, 139, 255, 0.45); }
+.dock__inner {
+  border-color: rgba(92, 200, 255, 0.22);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 34px rgba(47, 139, 255, 0.14);
+}
+.dock__inner > a:hover { color: var(--neon-hi); background: rgba(47, 139, 255, 0.12); }
+.dock__inner > a.is-active { color: var(--neon-2); text-shadow: 0 0 12px rgba(47, 139, 255, 0.7); }
+.dock__cta:hover { box-shadow: 0 0 30px rgba(47, 139, 255, 0.55); }
+.avatar--btn { box-shadow: 0 0 0 1px rgba(92, 200, 255, 0.55); }
+.copy:hover { border-color: var(--neon-2); color: var(--neon-hi); box-shadow: 0 0 22px rgba(47, 139, 255, 0.3); }
+.footer__mail:hover { border-color: var(--neon-2); text-shadow: 0 0 34px rgba(47, 139, 255, 0.5); }
+
+/* ---------- pointer ---------- */
+.cursor__dot { background: var(--neon-2); box-shadow: 0 0 10px rgba(92, 200, 255, 0.9); }
+.cursor__ring { border-color: rgba(92, 200, 255, 0.6); }
+.cursor.is-hover .cursor__ring { border-color: var(--neon-2); box-shadow: 0 0 18px rgba(47, 139, 255, 0.5); }
+.cursor.is-label .cursor__ring { background: rgba(47, 139, 255, 0.2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dot { animation: none; }
+}
+
+/* archive page: keep the side gutter (.archive shorthand padding was zeroing .shell padding-inline) */
+.archive { padding-inline: var(--pad); }
